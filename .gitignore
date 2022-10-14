@@ -10,3 +10,7 @@
 /bak/
 __pycache__
 .sconsign.dblite
+conan.lock
+conanbuildinfo.txt
+conaninfo.txt
+graph_info.json
