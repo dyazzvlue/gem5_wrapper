@@ -1,0 +1,57 @@
+# GEM5 tlm wrapper
+
+## I. Overview
+This is the tlm wrapper for customized GEM5 simulator(<https://github.com/dyazzvlue/gem5/tree/feature-chi>). The sources in this directory provide three SystemC modules that manage the
+SystemC/gem5 co-simulation: Gem5SimControl, Gem5MasterTransactor, and
+Gem5SlaveTransactor. They also implement gem5's ExternalMaster::Port interface
+(SCMasterPort) and ExternalSlave::Port interface (SCSlavePort). Besides, a simple bus is provided for connecting GEM5 core models to Systemc memory model.
+
+Example:
+```
++---------------+   +------------+   +-----------+     +----------+
+|               |   |            |-->| SC models |---->|          |
+| GEM5 Wrapper  |-->| Txn Router |   +-----------+     |  Memory  |
+|               |   | (Optional) |-------------------->|          |
++---------------+   +------------+     (Optional)      +----------+
+```
+
+## II. Files
+
+    sc_logger.{cc,hh}              -- rehosting of DPRINTF onto SC_REPORT
+    sc_module.{cc,hh}              -- SystemC simulation loop base class
+    sc_gem5_control.{cc,hh}        -- Alternative extra wrapping to allow gem5
+                                      Systems to be instantiated as single
+                                      sc_module objects.
+    stats.{cc,hh}                  -- Stats dumping (copied from util/cxx_config)
+    sc_slave_port.{cc,hh}          -- Implements SCSlavePort
+    sc_master_port.{cc,hh}         -- Implements SCMasterPort
+    sc_mm.{cc,hh}                  -- Implementation of a TLM memory manager
+    sc_ext.{cc,hh}                 -- TLM extension that carries a gem5 packet
+    sc_peq.{cc,hh}                 -- TLM PEQ for scheduling gem5 events
+    sim_control.{cc,hh}            -- Implements Gem5SimControl
+    slave_transactor.{cc,hh}       -- Implements Gem5SlaveTransactor
+    master_transactor.{cc,hh}      -- Implements Gem5MasterTransactor
+    blocking_packet_helper.{cc,hh} -- Handle blocking packets, send Retry if needed  
+    gem5_wrapper.{cc,hh}           -- Top class of GEM5 co-simulation. Includes 
+                                      gem5 sim control and related transactors
+
+    simple_bus.h                   -- A simple bus model based on Systemc
+    txn_router.h                   -- A SystemC model which can handle the destination
+                                      of tlm transactions by address (Optional)
+
+## III. Build
+This project can be built by CMakeList, scons or conan.
+
+### 1) CMakeList
+```bash
+mkdir build && cd build
+cmake ..
+make -j
+```
+### 2) SCons
+```bash
+python3 `which scons`
+```
+
+### 3) Conan
+TODO
