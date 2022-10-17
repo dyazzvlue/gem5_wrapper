@@ -42,16 +42,26 @@ Example:
 ## III. Build
 This project can be built by CMakeList, scons or conan.
 
-### 1) CMakeList
+### 1) CMake (Using local gem5 and systemc)
 ```bash
 mkdir build && cd build
 cmake ..
 make -j
 ```
-### 2) SCons
+### 2) SCons (Using local gem5 and systemc)
 ```bash
 python3 `which scons`
 ```
 
-### 3) Conan
-TODO
+### 3) Conan (Using Conan package gem5 and systemc)
+```bash
+mkdir build && cd build
+python3 `which conan` install ../conanfile.py -pr gcc91 -g virtualrunenv --build=missing
+python3 `which connan` build../conanfile.py
+```
+If CMake Error "Detected a mismatch for the compiler version between your conan profile settings and CMake" appeared, please build the project by clicking *Build*  in vs-code or used the command line below:
+```bash
+cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER:FILEPATH=/usr/local/bin/gcc -DCMAKE_CXX_COMPILER:FILEPATH=/usr/local/bin/g++ ../ -G Ninja
+python3 `which connan` build../conanfile.py
+```
+"/usr/local/bin/gcc" is where the correct version gcc installed

@@ -21,11 +21,16 @@ class Gem5WrapperConan(ConanFile):
         "fPIC": True,
         "CONANPKG": "OFF",
         "shared": True,
-        "build_tool": "scons"
+        "build_tool": "cmake"
     }
     version = "1.0"
     url = "https://gitlab.devtools.intel.com/syssim/cofluent"  # TODO
     license = "Proprietary"  # TODO
+
+    requires = (
+        "systemc/2.3.3@syssim/stable",
+        "gem5/1.0@demo/testing"
+    )
 
     exports_sources = (
         "include/*",
@@ -36,12 +41,16 @@ class Gem5WrapperConan(ConanFile):
 
     __cmake = None
 
+    def configure(self):
+        if self.options.build_tool == "scons" :
+            self.generators = "scons"
+        else:
+            self.generators = "cmake", "cmake_find_package"
+
     def build(self):
         if self.options.build_tool == "scons" :
-            generators = "scons"
             self.build_scons()
         else:
-            generators = "cmake", "cmake_find_package"
             self.build_cmake()
 
 
