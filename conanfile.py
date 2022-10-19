@@ -4,7 +4,7 @@ import os
 from conans import ConanFile, tools, CMake
 from os.path import isdir
 
-# python3 `which conan` create . demo/testing
+# python3 `which conan` create . demo/testing -o gem5:python_config="/usr/bin/python3-config"
 
 
 class Gem5WrapperConan(ConanFile):
@@ -78,4 +78,14 @@ class Gem5WrapperConan(ConanFile):
         self.copy("*.so", dst = "lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = "gem5_wrapper"
+        self.cpp_info.name = "gem5_wrapper"
+        self.cpp_info.components["_build"].requires = [
+            "systemc::systemc",
+            "gem5::gem5",
+        ]
+        self.cpp_info.components["libgem5_wrapper"].names["cmake_find_package"] = "gem5_wrapper"
+        self.cpp_info.components["libgem5_wrapper"].libs = ["gem5_wrapper"]
+        self.cpp_info.components["libgem5_wrapper"].requires = [
+            "systemc::systemc",
+            "gem5::gem5"
+        ]
