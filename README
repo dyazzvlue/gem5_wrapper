@@ -65,3 +65,8 @@ cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUI
 python3 `which connan` build../conanfile.py
 ```
 "/usr/local/bin/gcc" is where the correct version gcc installed
+
+In case building gem5 failed, please find the local python path, and use the python-config file there to build gem5 and gem5 wrapper.
+```
+python3 `which conan` install -o gem5:python_config="/usr/bin/python3-config"
+```

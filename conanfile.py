@@ -5,6 +5,7 @@ from conans import ConanFile, tools, CMake
 from os.path import isdir
 
 # python3 `which conan` create . demo/testing -o gem5:python_config="/usr/bin/python3-config"
+# python3 `which conan` install -o gem5:python_config="/usr/bin/python3-config"
 
 
 class Gem5WrapperConan(ConanFile):
